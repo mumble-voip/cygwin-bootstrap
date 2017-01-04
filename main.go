@@ -1,4 +1,4 @@
-// Copyright 2005-2017 The Mumble Developers. All rights reserved.
+ // Copyright 2005-2017 The Mumble Developers. All rights reserved.
 // Use of this source code is governed by a BSD-style license
 // that can be found in the LICENSE file at the root of the
 // Mumble source tree or at <https://www.mumble.info/LICENSE>.
@@ -15,28 +15,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-)
-
-var (
-	cygwinArch    string   = "x86"
-	cygwinMirrors []string = []string{
-		"http://mirrors.dotsrc.org/cygwin",
-	}
-	cygwinPackages []string = []string{
-		"base-cygwin",
-		"cygwin",
-		"base-files",
-		"bash",
-		"patch",
-		"tar",
-		"xz",
-		"gzip",
-		"bzip2",
-		"hostname",
-		"curl",
-		"which",
-		"unzip",
-	}
 )
 
 func distfilePath(args ...string) string {
@@ -76,7 +54,7 @@ func checkSHA512(absFn string, expectedLength int64, insha512 string) error {
 
 func ensureDownloaded(mirrorRelativeURL string, fileSize int64, sha512sum string) error {
 	mirrors := []string{}
-	for _, mirror := range cygwinMirrors {
+	for _, mirror := range Args.Mirrors() {
 		mirrors = append(mirrors, mirror)
 	}
 
@@ -201,7 +179,7 @@ func main() {
 	}
 
 	// Install all requested packages.
-	for _, pkg := range cygwinPackages {
+	for _, pkg := range Args.Packages() {
 		log.Printf("installing package '%v'", pkg)
 		err = installPkg(pkg, dist, Args.Target, nil)
 		if err == ErrAlreadyInstalled {
