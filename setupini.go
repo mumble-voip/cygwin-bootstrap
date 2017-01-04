@@ -6,17 +6,17 @@
 package main
 
 import (
-	"errors"
-	"os"
 	"bufio"
-	"strings"
-	"io"
+	"errors"
 	"fmt"
+	"io"
+	"os"
 	"strconv"
+	"strings"
 )
 
 type Distribution struct {
-	Arch string
+	Arch     string
 	Packages []Package
 
 	InstalledPackages map[string]bool
@@ -71,7 +71,7 @@ func (pkg *Package) Requirements() []string {
 	}
 	return []string{}
 }
- 
+
 func (pkg *Package) InstallInfo() (relativeUrl string, fileSize int64, sha512sum string) {
 	if val, ok := pkg.Meta["install"]; ok {
 		info := val.([]string)
@@ -122,15 +122,15 @@ func parseSetupIni(setupIniRelativeURL string) (*Distribution, error) {
 		// Skip comments
 		if strings.HasPrefix(line, "#") {
 			continue
-		// Context switch
+			// Context switch
 		} else if strings.HasPrefix(line, "@") {
 			pkgName := strings.TrimSpace(line[1:])
 			meta["name"] = pkgName
-		// Sections (we seem them as prefixes)
+			// Sections (we seem them as prefixes)
 		} else if strings.HasPrefix(line, "[") {
 			trimmedLine := strings.TrimSpace(line)
-			prefix = trimmedLine[1:len(trimmedLine)-1]
-		// End context
+			prefix = trimmedLine[1 : len(trimmedLine)-1]
+			// End context
 		} else if strings.TrimSpace(line) == "" {
 			if _, ok := meta["name"]; !ok {
 				meta["name"] = "__root__"
@@ -157,7 +157,7 @@ func parseSetupIni(setupIniRelativeURL string) (*Distribution, error) {
 					beforeStrLit = value[0:doubleQuoteIdx]
 				}
 				strLit := ""
-				idx := doubleQuoteIdx+1
+				idx := doubleQuoteIdx + 1
 				escapeSequence := false
 				getch := func() string {
 					retVal := ""

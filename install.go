@@ -6,11 +6,11 @@
 package main
 
 import (
-	"strings"
+	"errors"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"errors"
+	"strings"
 )
 
 var (
@@ -25,7 +25,7 @@ func installPkg(name string, dist *Distribution, targetDir string, excludeRequir
 	pkg, err := dist.Get(name)
 	if err != nil {
 		return err
-	} 
+	}
 
 	requirements := pkg.Requirements()
 	for _, req := range requirements {
@@ -58,7 +58,7 @@ func installPkg(name string, dist *Distribution, targetDir string, excludeRequir
 	absFn := distfilePath(relativeUrl)
 
 	if !Args.FetchOnly {
-		err = os.MkdirAll(targetDir, 0750) 
+		err = os.MkdirAll(targetDir, 0750)
 		if os.IsExist(err) {
 			// OK...
 		} else if err != nil {
@@ -95,7 +95,7 @@ func installPkg(name string, dist *Distribution, targetDir string, excludeRequir
 				newenv := []string{}
 				for _, envvar := range env {
 					if strings.HasPrefix(strings.ToLower(envvar), "path=") {
-						newenv = append(newenv, "PATH=" + filepath.Join(targetDir, "bin") + ";" + os.Getenv("PATH"))
+						newenv = append(newenv, "PATH="+filepath.Join(targetDir, "bin")+";"+os.Getenv("PATH"))
 					} else {
 						newenv = append(newenv, envvar)
 					}
@@ -107,7 +107,7 @@ func installPkg(name string, dist *Distribution, targetDir string, excludeRequir
 					return err
 				}
 
-				err = os.Rename(absFn, absFn + ".done")
+				err = os.Rename(absFn, absFn+".done")
 				if err != nil {
 					return err
 				}

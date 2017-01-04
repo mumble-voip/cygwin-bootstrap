@@ -6,26 +6,26 @@
 package main
 
 import (
-	"os"
-	"log"
-	"io"
-	"fmt"
-	"errors"
-	"path/filepath"
 	"crypto/sha512"
 	"encoding/hex"
+	"errors"
+	"fmt"
+	"io"
+	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 )
 
 var (
-	cygwinArch string = "x86"
+	cygwinArch    string   = "x86"
 	cygwinMirrors []string = []string{
 		"http://mirrors.dotsrc.org/cygwin",
 	}
 	cygwinPackages []string = []string{
 		"base-cygwin",
 		"cygwin",
-		"base-files", 
+		"base-files",
 		"bash",
 		"patch",
 		"tar",
@@ -55,7 +55,7 @@ func checkSHA512(absFn string, expectedLength int64, insha512 string) error {
 
 	defer f.Close()
 
-	n, err := io.Copy(hw, f)	
+	n, err := io.Copy(hw, f)
 	if err != nil {
 		return err
 	}
@@ -98,13 +98,13 @@ func ensureDownloaded(mirrorRelativeURL string, fileSize int64, sha512sum string
 		} else if err != nil {
 			log.Fatalf("unable to mkdir: %v", err)
 		}
-		
+
 		rsp, err := http.Get(url)
 		if err != nil {
 			return err
 		}
 		defer rsp.Body.Close()
-		
+
 		newf, err := os.Create(outFn)
 		if err != nil {
 			return err
@@ -118,7 +118,7 @@ func ensureDownloaded(mirrorRelativeURL string, fileSize int64, sha512sum string
 
 		if len(sha512sum) == 0 {
 			return nil
-	 	} else {
+		} else {
 			if fileSize == -1 {
 				return errors.New("If ensureDownloaded is passed a sha512sum, it must also be passed a fileSize.")
 			}
@@ -167,7 +167,7 @@ func main() {
 			log.Fatalf("prepareTarget failed: %v", err)
 		}
 	}
-	
+
 	log.Printf("preparing distfiles '%v'", Args.Distfiles())
 	err = os.MkdirAll(Args.Distfiles(), 0755)
 	if os.IsExist(err) {
@@ -177,13 +177,13 @@ func main() {
 	}
 
 	log.Printf("fetching setup.ini")
-	err = ensureDownloaded(Args.Arch + "/setup.ini", -1, "")
+	err = ensureDownloaded(Args.Arch+"/setup.ini", -1, "")
 	if err != nil {
 		log.Fatalf("unable to download setup.ini: %v", err)
 	}
 
 	log.Printf("fetching setup.ini.sig")
-	err = ensureDownloaded(Args.Arch + "/setup.ini.sig", -1, "")
+	err = ensureDownloaded(Args.Arch+"/setup.ini.sig", -1, "")
 	if err != nil {
 		log.Fatalf("unable to downlaod setup.ini.sig: %v", err)
 	}

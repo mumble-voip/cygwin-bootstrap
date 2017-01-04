@@ -6,11 +6,11 @@
 package main
 
 import (
-	"os"
-	"golang.org/x/sys/windows"
 	"encoding/binary"
+	"golang.org/x/sys/windows"
+	"os"
 )
- 
+
 // From the Cygwin user guide (https://www.cygwin.com/cygwin-ug-net/using.html):
 //
 //    The default symlinks are plain files containing a

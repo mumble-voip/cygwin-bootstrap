@@ -6,9 +6,9 @@
 package main
 
 import (
+	"golang.org/x/crypto/openpgp"
 	"os"
 	"strings"
-	"golang.org/x/crypto/openpgp"
 )
 
 // Cygwin public keyring via https://cygwin.com/key/pubring.asc

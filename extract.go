@@ -7,14 +7,14 @@ package main
 
 import (
 	"archive/tar"
-	"compress/gzip"
 	"compress/bzip2"
+	"compress/gzip"
 	"github.com/ulikunitz/xz"
-	"os"
-	"strings"
-	"log"
 	"io"
+	"log"
+	"os"
 	"path/filepath"
+	"strings"
 )
 
 func checkFn(fn string) bool {
@@ -43,17 +43,17 @@ func extractTo(absFn string, targetDir string) error {
 			return err
 		}
 		tr = tar.NewReader(gzr)
-	// bz2
+		// bz2
 	} else if strings.HasSuffix(absFn, ".tar.bz2") || strings.HasSuffix(absFn, ".tbz") {
 		tr = tar.NewReader(bzip2.NewReader(f))
-	// xz
+		// xz
 	} else if strings.HasSuffix(absFn, ".tar.xz") {
 		xzr, err := xz.NewReader(f)
 		if err != nil {
 			return err
 		}
 		tr = tar.NewReader(xzr)
-	// lzma, etc?
+		// lzma, etc?
 	} else {
 		log.Fatal("unhandled file extension: %v", absFn)
 	}
@@ -87,7 +87,7 @@ func extractTo(absFn string, targetDir string) error {
 
 			defer f.Close()
 
-			_, err = io.Copy(f, tr)		
+			_, err = io.Copy(f, tr)
 			if err != nil {
 				return err
 			}
