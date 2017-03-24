@@ -6,4 +6,4 @@
 package main
 
 var progName = "cygwin-bootstrap"
-var progVersion = "0.1"
+var progVersion = "0.2"
