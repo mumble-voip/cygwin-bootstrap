@@ -74,9 +74,15 @@ func extractTo(absFn string, targetDir string) error {
 		if strings.HasPrefix(hdr.Name, "usr/bin") {
 			hdr.Name = strings.Replace(hdr.Name, "usr/bin", "bin", 1)
 		}
+		if strings.HasPrefix(hdr.Linkname, "usr/bin") {
+			hdr.Linkname = strings.Replace(hdr.Linkname, "usr/bin", "bin", 1)
+		}
 		// Map /usr/lib -> /lib
 		if strings.HasPrefix(hdr.Name, "usr/lib") {
 			hdr.Name = strings.Replace(hdr.Name, "usr/lib", "lib", 1)
+		}
+		if strings.HasPrefix(hdr.Linkname, "usr/lib") {
+			hdr.Linkname = strings.Replace(hdr.Linkname, "usr/lib", "lib", 1)
 		}
 
 		if hdr.Typeflag == tar.TypeReg || hdr.Typeflag == tar.TypeRegA {
