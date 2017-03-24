@@ -45,7 +45,7 @@ var Args args
 
 func init() {
 	flag.StringVar(&Args.Target, "target", "", "target directory for cygwin installation (i.e, c:\\cygwin)")
-	flag.StringVar(&Args.DistfilesUnexpanded, "distfiles", "${target}/distfiles", "path where "+progName+" will store downloaded artifacts")
+	flag.StringVar(&Args.DistfilesUnexpanded, "distfiles", "${target}\\distfiles", "path where "+progName+" will store downloaded artifacts")
 	flag.StringVar(&Args.Arch, "arch", "x86", "cygwin architecture (x86 or x86_64)")
 	flag.StringVar(&Args.MirrorsSeparated, "mirrors", "http://mirrors.dotsrc.org/cygwin", "mirror(s) to download from (comma separated)")
 	flag.StringVar(&Args.PackagesSeparated, "packages", "base-cygwin,cygwin,base-files,bash,patch,tar,xz,gzip,bzip2,hostname,curl,which,unzip", "packages to install (comma separated)")
