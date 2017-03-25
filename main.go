@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func distfilePath(args ...string) string {
@@ -68,6 +69,11 @@ func ensureDownloaded(mirrorRelativeURL string, fileSize int64, sha512sum string
 		mirrors = mirrors[1:]
 
 		url := mirrorBase + "/" + mirrorRelativeURL
+
+		// Amazon S3 requires + signs in the URL to be
+		// URL escaped.
+		escapedUrl := strings.Replace(url, "+", "%2B", -1)
+
 		outFn := distfilePath(mirrorRelativeURL)
 		dir := filepath.Dir(outFn)
 		err := os.MkdirAll(dir, 0755)
@@ -77,7 +83,7 @@ func ensureDownloaded(mirrorRelativeURL string, fileSize int64, sha512sum string
 			log.Fatalf("unable to mkdir: %v", err)
 		}
 
-		rsp, err := http.Get(url)
+		rsp, err := http.Get(escapedUrl)
 		if err != nil {
 			return err
 		}
