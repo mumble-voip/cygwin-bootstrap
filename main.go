@@ -189,6 +189,11 @@ func main() {
 		}
 	}
 
+	err = postSetup(Args.Target)
+	if err != nil {
+		log.Fatalf("unable to perform postSetup: %v", err)
+	}
+
 	if !Args.KeepDistfiles {
 		log.Printf("removing distfiles directory")
 		err = os.RemoveAll(Args.Distfiles())
