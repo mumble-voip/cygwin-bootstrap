@@ -27,6 +27,17 @@ func checkFn(fn string) bool {
 	return true
 }
 
+func ensureParentDirExists(path string) error {
+	dir := filepath.Dir(path)
+	err := os.MkdirAll(dir, 0750)
+	if os.IsExist(err) {
+		// OK...
+	} else if err != nil {
+		return err
+	}
+	return nil
+}
+
 func extractTo(absFn string, targetDir string) error {
 	var tr *tar.Reader = nil
 
@@ -86,7 +97,13 @@ func extractTo(absFn string, targetDir string) error {
 		}
 
 		if hdr.Typeflag == tar.TypeReg || hdr.Typeflag == tar.TypeRegA {
-			f, err := os.Create(filepath.Join(targetDir, hdr.Name))
+			path := filepath.Join(targetDir, hdr.Name)
+			err = ensureParentDirExists(path)
+			if err != nil {
+				return err
+			}
+
+			f, err := os.Create(path)
 			if err != nil {
 				return err
 			}
@@ -103,12 +120,24 @@ func extractTo(absFn string, targetDir string) error {
 				return err
 			}
 		} else if hdr.Typeflag == tar.TypeLink {
-			err = os.Link(filepath.Join(targetDir, hdr.Linkname), filepath.Join(targetDir, hdr.Name))
+			path := filepath.Join(targetDir, hdr.Name)
+			err = ensureParentDirExists(path)
+			if err != nil {
+				return err
+			}
+
+			err = os.Link(filepath.Join(targetDir, hdr.Linkname), path)
 			if err != nil {
 				return err
 			}
 		} else if hdr.Typeflag == tar.TypeSymlink {
-			err = cyglink(filepath.Join(targetDir, hdr.Name), hdr.Linkname)
+			path := filepath.Join(targetDir, hdr.Name)
+			err = ensureParentDirExists(path)
+			if err != nil {
+				return err
+			}
+
+			err = cyglink(path, hdr.Linkname)
 			if err != nil {
 				return err
 			}
