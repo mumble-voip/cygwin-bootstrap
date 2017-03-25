@@ -48,7 +48,7 @@ func init() {
 	flag.StringVar(&Args.DistfilesUnexpanded, "distfiles", "${target}\\distfiles", "path where "+progName+" will store downloaded artifacts")
 	flag.StringVar(&Args.Arch, "arch", "x86", "cygwin architecture (x86 or x86_64)")
 	flag.StringVar(&Args.MirrorsSeparated, "mirrors", "http://mirrors.dotsrc.org/cygwin", "mirror(s) to download from (comma separated)")
-	flag.StringVar(&Args.PackagesSeparated, "packages", "base-cygwin,cygwin,base-files,bash,patch,tar,xz,gzip,bzip2,hostname,curl,which,unzip", "packages to install (comma separated)")
+	flag.StringVar(&Args.PackagesSeparated, "packages", "base-cygwin,cygwin,base-files,bash,patch,tar,xz,gzip,bzip2,hostname,curl,which,unzip,grep,gawk,vim,mingw64-i686-gcc-core,mingw64-i686-binutils", "packages to install (comma separated)")
 	flag.BoolVar(&Args.FetchOnly, "fetch-only", false, "only fetch distfiles, don't install anything (implies -keep-distfiles=true)")
 	flag.BoolVar(&Args.KeepDistfiles, "keep-distfiles", false, "keep distfiles?")
 	flag.BoolVar(&Args.Help, "help", false, "show this listing")
