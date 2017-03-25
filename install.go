@@ -48,7 +48,10 @@ func installPkg(name string, dist *Distribution, targetDir string, excludeRequir
 			newExcludeRequirements := []string{}
 			newExcludeRequirements = append(newExcludeRequirements, excludeRequirements...)
 			newExcludeRequirements = append(newExcludeRequirements, name)
-			installPkg(req, dist, targetDir, newExcludeRequirements)
+			err = installPkg(req, dist, targetDir, newExcludeRequirements)
+			if err != nil {
+				return err
+			}
 		}
 	}
 
